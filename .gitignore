@@ -1,0 +1,40 @@
+# Python-related
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual environment
+venv/
+.env
+
+# Dependency directories
+dist/
+build/
+lib/
+lib64/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# User-specific
+*.swp
+.DS_Store
+
+# Environment files
+.env
+
+# Local configuration
+local_settings.py
+
+# Compiled files
+*.pyc
+*.pyo
+
+# Testing databases
+*.sqlite3
+

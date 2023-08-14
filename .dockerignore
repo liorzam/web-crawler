@@ -1,0 +1,30 @@
+# Ignore build context files that are not necessary for the image
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual environment
+.venv/
+venv/
+.env
+
+# Dependency directories
+dist/
+build/
+lib/
+lib64/
+
+# Local development files
+*.log
+.DS_Store
+
+# Compiled files
+*.pyc
+*.pyo
+
+# Testing databases
+*.sqlite3
+
+.vscode

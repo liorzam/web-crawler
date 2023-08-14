@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "crawler"
+version = "0.1.0"
+description = ""
+authors = ["Lior Zamir <liorzam@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+beautifulsoup4 = "^4.10.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^6.1.0"
+mypy = "^1.5.0"
+pytest = "^7.4.0"
+toml = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+crawler = "main:parse_args"
