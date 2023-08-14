@@ -106,7 +106,7 @@ class WebCrawler:
             href = link.get('href')
             if href and urljoin(base_url, href):
                 parsed_url = urlparse(urljoin(base_url, href))
-                sanitized_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
+                sanitized_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}".rstrip('/')
 
                 if not sanitized_url:
                     logger.warn("Non compatible link: {base_url}")
