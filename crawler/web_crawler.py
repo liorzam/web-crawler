@@ -49,7 +49,7 @@ class WebCrawler:
         if sorted_urls_by_rank:
             logger.info(f"Highest Ranked {sorted_urls_by_rank[0]}")
 
-        for url in sorted_urls_by_rank[1:]:
+        for url in sorted_urls_by_rank[1:5]:
                     logger.info(f"Ranked {url}")
 
 

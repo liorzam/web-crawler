@@ -15,12 +15,6 @@ class UrlManager:
 
         log.add(same_domain_count=len(same_domain_links),
                 all_links_count=len(all_links))
-
-    def get_highest_ranked_log(self):
-        if not self._url_items:
-            return None
         
-        return max(self._url_items.values(), key=lambda log: log.rank, default=None)
-    
     def get_urls_sorted_by_rank(self):
         return sorted(self._url_items.values(), key=lambda log: log.rank, reverse=True)

@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info
     command: -d 3 -l 30 https://python-poetry.org/docs
     
