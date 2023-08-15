@@ -23,15 +23,6 @@ Web Crawler is a Python-based command-line tool for crawling web pages and extra
 
 ## Usage
 
-### Logging and Verbose Mode
-The crawler supports different levels of logging verbosity. By default, the log level is set to 'info', providing essential information about the crawling process. You can increase the verbosity to 'debug' level to get more detailed logs, which can be helpful for debugging.
-
-To enable 'debug' level logging, set the LOG_LEVEL environment variable to 'debug' before running the crawler:
-
-```sh
-LOG_LEVEL=debug poetry run crawler https://example.com
-```
-
 ### Run the crawler and specify a starting URL:
 #### Using bash:
    * `<root_url>`: The URL of the starting web page for crawling.
@@ -42,8 +33,16 @@ LOG_LEVEL=debug poetry run crawler https://example.com
    $ # crawler <root_url> [-d <depth_limit>] [-l <page_link_limit>]
    $ crawler <root_url> --depth_limit 3 --page_link_limit 10
    $ crawler <root_url> -d 3 -l 10
-   
    ```
+
+### Logging and Verbose Mode
+The crawler supports different levels of logging verbosity. By default, the log level is set to 'info', providing essential information about the crawling process. You can increase the verbosity to 'debug' level to get more detailed logs, which can be helpful for debugging.
+
+To enable 'debug' level logging, set the LOG_LEVEL environment variable to 'debug' before running the crawler:
+
+```sh
+LOG_LEVEL=debug poetry run crawler https://example.com
+```
 
 #### Using Docker:
    ```sh 
@@ -75,7 +74,6 @@ Replace `<root_url>` with the URL of the root page to start crawling from, and `
 The crawler will output a TSV file containing URL, depth, and rank information.
 
 <!-- #TODO: Deploy docker to dockerhub -->
-<!-- #TODO: Add how to use with docker  -->
 
 ## Publish new version
 
@@ -85,8 +83,6 @@ The crawler will output a TSV file containing URL, depth, and rank information.
    ```sh
    poetry publish --build
    ```
-
-
 
 ### Dependencies
 This project uses the following dependencies:
