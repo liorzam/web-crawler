@@ -1,14 +1,24 @@
 
+
+import logging
 from crawler.exporters.consts import ExporterType
 from crawler.exporters.factory import ExporterFactory
+from crawler.logger import setup_logger
 from crawler.url.item import UrlItem
+
+logger = setup_logger(__name__)
 
 
 class UrlManager:
     def __init__(self, export_type=ExporterType.TSV):
         # Dictionary to hold UrlItem instances
         self.urls = {}
-        self._export_type = export_type
+        self.export_types = [export_type]
+
+        if logger.isEnabledFor(logging.DEBUG):
+            self.export_types.append(ExporterType.CONSOLE)
+
+        self.exporters = [ExporterFactory.create_exporter(export_type) for export_type in self.export_types]
 
     def get_urls_sorted_by_rank(self):
         return sorted(self.urls.values(), key=lambda log: log.rank, reverse=True)
@@ -23,6 +33,8 @@ class UrlManager:
         log.add(same_domain_count=len(same_domain_links),
                 all_links_count=len(all_links))
 
-    def export(self, exporter_type: ExporterType = None, *args, **kwargs):
-        exporter = ExporterFactory.create_exporter(exporter_type or self._export_type, *args, **kwargs)
-        exporter.export(self.get_urls_sorted_by_rank())
+    def export(self):
+        sorted_urls = self.get_urls_sorted_by_rank()
+
+        for exporter in self.exporters:
+            exporter.export(sorted_urls)

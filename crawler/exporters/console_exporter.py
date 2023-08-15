@@ -5,7 +5,7 @@ logger = setup_logger(__name__)
 
 
 class ConsoleExporter(BaseExporter):
-    def export(self, data):
+    def export(self, data, *args, **kwargs):
         if data:
             logger.info(f"Highest Ranked {data[0]}")
 

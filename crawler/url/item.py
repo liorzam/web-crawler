@@ -18,4 +18,4 @@ class UrlItem:
         return self._same_domain_counter / self._all_links_counter if self._all_links_counter > 0 else 0.0
 
     def __str__(self):
-        return "URL: %s, Rank: %.4f" % (self.url, self.rank)
+        return f"URL: {self.url}, Depth: {self.depth} Rank: %.4f" % (self.rank)

@@ -38,7 +38,7 @@ class WebCrawler:
         self._page_link_limit = options.page_link_limit or self.DEFAULT_PAGE_LINK_LIMIT
 
         self._visited_urls = set()
-        self._urls_manager = UrlManager()
+        self._urls_manager = UrlManager(ExporterType.TSV)
 
     @measure_time(logger)
     def fetch_page(self, url):
@@ -60,10 +60,7 @@ class WebCrawler:
         # Initialize the crawling process
         self._crawl(self._root_url)
 
-        self._urls_manager.export(ExporterType.TSV, 'output.tsv')
-
-        if logger.isEnabledFor(logging.DEBUG):
-            self._urls_manager.export(ExporterType.CONSOLE)
+        self._urls_manager.export()
 
     def _crawl(self, url, depth=1):
         if depth > self._depth_limit or url in self._visited_urls:
@@ -78,18 +75,18 @@ class WebCrawler:
 
             url_links = self._explore_urls_to_visit_v2(content, url)
 
-            limited_links = list(itertools.islice(url_links, self._page_link_limit))
-
-            if limited_links:
-                logger.debug(f"Discovered URLs to crawl: {limited_links}")
-
-            same_domain_links = [link for link in limited_links if urlparse(link).netloc == urlparse(url).netloc]
+            same_domain_links = [link for link in url_links if urlparse(link).netloc == urlparse(url).netloc]
 
             # Calculate page rank based on same_domain_links
             self._urls_manager.add(url, same_domain_links, url_links, depth=depth)
 
-            for link in same_domain_links:
-                self._crawl(link, depth + 1)
+            limited_links = list(itertools.islice(url_links, self._page_link_limit))
+
+            if limited_links:
+                logger.debug(f"URLs to crawl: {limited_links}")
+
+                for link in limited_links:
+                    self._crawl(link, depth + 1)
 
         except Exception as e:
             logger.error(f"Error while crawling a page: {url}", e)

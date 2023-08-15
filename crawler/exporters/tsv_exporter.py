@@ -9,13 +9,10 @@ logger = setup_logger(__name__)
 
 
 class TsvFileExporter(BaseExporter):
-    def __init__(self, filename):
-        self.filename = filename
-
-    def export(self, data):
+    def export(self, data, filename='output.tsv', *args, **kwargs):
         os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-        with open(os.path.join(OUTPUT_FOLDER, self.filename), 'w', newline='', encoding='utf-8') as tsv_file:
+        with open(os.path.join(OUTPUT_FOLDER, filename), 'w', newline='', encoding='utf-8') as tsv_file:
             tsv_writer = csv.writer(tsv_file, delimiter='\t')
             tsv_writer.writerow(['URL', 'Depth', 'Rank'])
 
