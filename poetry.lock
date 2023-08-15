@@ -1,4 +1,16 @@
 [[package]]
+name = "autopep8"
+version = "2.0.2"
+description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+pycodestyle = ">=2.10.0"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.12.2"
 description = "Screen-scraping library"
@@ -76,6 +88,20 @@ description = "brain-dead simple config-ini parsing"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "isort"
+version = "5.12.0"
+description = "A Python utility / library to sort Python imports."
+category = "dev"
+optional = false
+python-versions = ">=3.8.0"
+
+[package.extras]
+colors = ["colorama (>=0.4.3)"]
+requirements-deprecated-finder = ["pip-api", "pipreqs"]
+pipfile-deprecated-finder = ["pip-shims (>=0.5.2)", "pipreqs", "requirementslib"]
+plugins = ["setuptools"]
 
 [[package]]
 name = "mccabe"
@@ -233,9 +259,10 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a9b08e07716648dc51a6fffe988a43586bff3fca48b1f25ee1e3a1dc3c409b0a"
+content-hash = "b99db5868205fbe99186e3c603acd33c82ede13619a233fc1a4033d5a60166f4"
 
 [metadata.files]
+autopep8 = []
 beautifulsoup4 = []
 certifi = []
 charset-normalizer = []
@@ -244,6 +271,7 @@ exceptiongroup = []
 flake8 = []
 idna = []
 iniconfig = []
+isort = []
 mccabe = []
 mypy = []
 mypy-extensions = []

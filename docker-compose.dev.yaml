@@ -2,6 +2,6 @@ version: '3'
 services:
   crawler:
     environment:
-      - LOG_LEVEL=info
+      - LOG_LEVEL=debug
     volumes:
       - ./:/app

@@ -7,5 +7,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - LOG_LEVEL=info
-    command: -d 3 -l 30 https://python-poetry.org/docs
+    volumes:
+      - ./data/:/app/data
+    command: -d 2 -l 10 https://python-poetry.org/docs
     

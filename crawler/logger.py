@@ -1,10 +1,11 @@
-import os
 import logging
+import os
 import time
+
 
 def setup_logger(logger_name="crawler"):
     logger = logging.getLogger(logger_name)
-    
+
     # Read log level from environment variable, default to INFO if not set
     log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
     logger.setLevel(log_level)
@@ -20,6 +21,7 @@ def setup_logger(logger_name="crawler"):
     # Add the handlers to the logger
     logger.addHandler(ch)
     return logger
+
 
 def measure_time(logger):
     def decorator(func):

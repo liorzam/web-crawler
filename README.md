@@ -12,15 +12,14 @@ Web Crawler is a Python-based command-line tool for crawling web pages and extra
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository
+2. Install the required dependencies using Poetry: `poetry install`
    <!-- #TODO: Upload to my personal git -->
    ```sh
    git clone https://github.com/liorzam/web-crawler.git
    cd web-crawler
    poetry install
    ```
-
-2. Install the required dependencies using Poetry: `poetry install`
 
 ## Usage
 
@@ -35,13 +34,20 @@ LOG_LEVEL=debug poetry run crawler https://example.com
 
 ### Run the crawler and specify a starting URL:
 #### Using bash:
+   * `<root_url>`: The URL of the starting web page for crawling.
+   * -d or --depth_limit: (Optional) The recursion depth limit for crawling (default: 3).
+   * -l or --page_link_limit: (Optional) The maximum number of page href links to collect (default: 10).
+
    ```sh 
-   crawler --depth_limit 3 --page_link_limit 10 <root_url>
+   $ # crawler <root_url> [-d <depth_limit>] [-l <page_link_limit>]
+   $ crawler <root_url> --depth_limit 3 --page_link_limit 10
+   $ crawler <root_url> -d 3 -l 10
+   
    ```
 
 #### Using Docker:
    ```sh 
-   docker-compose run crawler -d 3 -l 10 <root_url>
+   $ docker-compose run crawler -d 3 -l 10 <root_url>
    ```
 
 #### Using python:

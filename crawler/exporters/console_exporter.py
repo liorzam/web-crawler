@@ -3,6 +3,7 @@ from crawler.logger import setup_logger
 
 logger = setup_logger(__name__)
 
+
 class ConsoleExporter(BaseExporter):
     def export(self, data):
         if data:
@@ -10,4 +11,3 @@ class ConsoleExporter(BaseExporter):
 
             for url in data[1:]:
                 logger.info(url)
-        

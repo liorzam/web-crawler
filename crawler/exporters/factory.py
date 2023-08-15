@@ -8,7 +8,7 @@ class ExporterFactory:
         ExporterType.CONSOLE: ConsoleExporter,
         ExporterType.TSV: TsvFileExporter,
     }
-        
+
     @classmethod
     def create_exporter(cls, exporter_type: ExporterType, *args, **kwargs):
         exporter_class = cls.EXPORTER_MAP.get(exporter_type)
