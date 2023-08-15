@@ -1,6 +1,7 @@
 class UrlItem:
-    def __init__(self, url):
+    def __init__(self, url, depth):
         self.url = url
+        self.depth = depth
         self._same_domain_counter = 0
         self._all_links_counter = 0
 

@@ -1,10 +1,12 @@
 import itertools
+import logging
 from urllib.parse import urldefrag, urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
+from crawler.exporters.consts import ExporterType
 
 from crawler.logger import measure_time, setup_logger
 from crawler.url.manager import UrlManager
@@ -12,18 +14,31 @@ from crawler.url.manager import UrlManager
 logger = setup_logger(__name__)
 
 class WebCrawler:
-    def __init__(self, root_url, depth_limit, page_link_limit):
+    """A simple web crawler library for fetching and analyzing web pages."""
+    DEFAULT_DEPTH_LIMIT = 3
+    DEFAULT_PAGE_LINK_LIMIT = 10
+
+    def __init__(self, options):
+        """
+        Initialize the web crawler with the specified options.
+
+        Parameters:
+            - root_url (str): The URL of the root page to crawl.
+            - depth_limit (int, optional): Recursion depth limit (default: 3).
+            - page_link_limit (int, optional): Page link limit (default: 10).
+        """
+                
         self._init_request_adapter()
-        logger.debug(f"Scraping page: {root_url}, depth: {depth_limit}")
-        if not root_url:
+        if not options.root_url:
              raise ValueError("The root_url cannot be None.")
         
-        self._root_url = root_url
-        self._depth_limit = depth_limit
-        self._page_link_limit = page_link_limit
+        self._root_url = options.root_url
+        self._depth_limit = options.depth_limit or self.DEFAULT_DEPTH_LIMIT
+        self._page_link_limit = options.page_link_limit or self.DEFAULT_PAGE_LINK_LIMIT
+        
         self._visited_urls = set()
-        self._manager = UrlManager()
-
+        self._urls_manager = UrlManager()
+        
     @measure_time(logger)
     def fetch_page(self, url):
         try:
@@ -38,22 +53,19 @@ class WebCrawler:
             logger.error(f"Error fetching {url}: {e}")
             return None
         
-    def start_crawling(self):
+    def start(self):
         logger.info(f"Starting web crawling from: {self._root_url} with depth: {self._depth_limit}")
 
         # Initialize the crawling process
-        self._crawl(self._root_url, 1)
+        self._crawl(self._root_url)
 
-        sorted_urls_by_rank = self._manager.get_urls_sorted_by_rank()
+        self._urls_manager.export(ExporterType.TSV, 'output.tsv')
 
-        if sorted_urls_by_rank:
-            logger.info(f"Highest Ranked {sorted_urls_by_rank[0]}")
-
-        for url in sorted_urls_by_rank[1:5]:
-                    logger.info(f"Ranked {url}")
+        if logger.isEnabledFor(logging.DEBUG):
+            self._urls_manager.export(ExporterType.CONSOLE)
 
 
-    def _crawl(self, url, depth):
+    def _crawl(self, url, depth=1):
         if depth > self._depth_limit or url in self._visited_urls:
             return
 
@@ -69,12 +81,12 @@ class WebCrawler:
             limited_links = list(itertools.islice(url_links, self._page_link_limit))
 
             if limited_links:
-                logger.debug("Discover new URLs to crawl: %s", limited_links)
+                logger.debug(f"Discovered URLs to crawl: {limited_links}")
 
             same_domain_links = [link for link in limited_links if urlparse(link).netloc == urlparse(url).netloc]
             
             # Calculate page rank based on same_domain_links
-            self._manager.add(url, same_domain_links, url_links)
+            self._urls_manager.add(url, same_domain_links, url_links, depth=depth)
 
             for link in same_domain_links:
                 self._crawl(link, depth + 1)
@@ -88,13 +100,13 @@ class WebCrawler:
         self._adapter = HTTPAdapter(max_retries=self._retries)
         self._session.mount('http://', self._adapter)
         self._session.mount('https://', self._adapter)
-        
     
     def _explore_urls_to_visit_v1(self, content, base_url):
         # Use BeautifulSoup to parse the HTML content and extract links
         #TODO: can be improved by contextmanager and generator
         soup = BeautifulSoup(content, 'html.parser')
 
+        # Isnt good approch since i've got some duplication with the last '/'
         return set(urldefrag(urljoin(base_url, link.get('href'))).url for link in soup.find_all('a') if link.get('href') and urljoin(base_url, link.get('href')))
     
     def _explore_urls_to_visit_v2(self, content, base_url):
