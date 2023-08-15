@@ -38,3 +38,4 @@ local_settings.py
 # Testing databases
 *.sqlite3
 
+data

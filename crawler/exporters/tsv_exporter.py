@@ -1,12 +1,11 @@
-import csv
 import os
+import csv
 
 from crawler.exporters.base_exporter import BaseExporter
+from crawler.exporters.consts import OUTPUT_FOLDER
 from crawler.logger import setup_logger
 
 logger = setup_logger(__name__)
-
-OUTPUT_FOLDER = './data'
 
 
 class TsvFileExporter(BaseExporter):
